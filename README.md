@@ -4,9 +4,9 @@ The second version of Random Tensor Network Integrator ([RTNI](https://motohisaf
 The latest RTNI2 is compatible with the following versions.
 ```python
 Python 3.11.5
-sympy  1.12
-tensornetwork 0.4.6
-graphviz 0.20.1
+Sympy  1.12
+TensorNetwork 0.4.6
+Graphviz 0.20.1
 ```
 
 The original RTNI can integrate tensor networks over random unitary matrices. The Mathematica and Python programs can be found at
