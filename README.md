@@ -19,7 +19,7 @@ The paper is at the arxiv [arXiv:2309.01167 [physics.comp-ph]]([https://doi.org/
       archivePrefix={arXiv},
       primaryClass={physics.comp-ph}
 }
-'''
+```
 
 The original RTNI can integrate tensor networks over random unitary matrices. The Mathematica and Python programs can be found at another repository:<br>
 [RTNI](https://github.com/MotohisaFukuda/PyRTNI2)).
