@@ -21,8 +21,8 @@ The paper is at the arxiv [arXiv:2309.01167 [physics.comp-ph]]([https://doi.org/
 }
 ```
 
-The original RTNI can integrate tensor networks over random unitary matrices. The Mathematica and Python programs can be found at another repository:<br>
-[RTNI](https://github.com/MotohisaFukuda/PyRTNI2)).
+The original RTNI can integrate tensor networks over random unitary matrices. The Mathematica and Python programs can be found at another repository:
+[RTNI](https://github.com/MotohisaFukuda/PyRTNI2)).<br>
 This was developped through:<br>
 Motohisa Fukuda, Robert König, and Ion Nechita. RTNI - A symbolic integrator for Haar-random tensor networks.<br>
 Journal of Physics A: Mathematical and Theoretical, Volume 52, Number 42, 2019.<br>
