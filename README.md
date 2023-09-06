@@ -1,15 +1,9 @@
 # PyRTNI2
 The second version of Random Tensor Network Integrator ([RTNI](https://motohisafukuda.github.io/RTNI/)) in Python. It can symbolically integrate tensor networks over the Haar-distributed orthogonal and unitary matrices and the real and complex normal Gaussian tensors, even for low dimensions, where the Weingarten functions differ from the ones for high dimensions. One can export tensor networks in the format of [TensorNetwork](https://github.com/google/TensorNetwork).
 
-The latest PyRTNI2 is compatible with the following versions.
-```python
-Python 3.11.5
-Sympy  1.12
-TensorNetwork 0.4.6
-Graphviz 0.20.1
-```
-
-The paper is at the arxiv [arXiv:2309.01167 [physics.comp-ph]]([https://doi.org/10.1088/1751-8121/ab434b](https://arxiv.org/abs/2309.01167)) and please cite it as
+Please use tutorial notebooks for the user interface. 
+Also, one can refer to the paper for more information.
+It is abailable at [arXiv:2309.01167 [physics.comp-ph]](https://arxiv.org/abs/2309.01167) and can be cited as
 ```
 @misc{fukuda2023symbolically,
       title={Symbolically integrating tensor networks over various random tensors -- the second version of Python RTNI}, 
@@ -21,6 +15,18 @@ The paper is at the arxiv [arXiv:2309.01167 [physics.comp-ph]]([https://doi.org/
 }
 ```
 
+## Dependencies
+
+The latest PyRTNI2 is compatible with the following versions.
+```python
+Python 3.11.5
+Sympy  1.12
+TensorNetwork 0.4.6
+Graphviz 0.20.1
+```
+Python and Sympy are needed for symbolic calculations, TensorNetwork for concrete ones and Graphviz for visualization via TensorNetwork.
+
+## RTNI - the original work
 The original RTNI can integrate tensor networks over random unitary matrices with Mathematica and Python:
 [RTNI](https://github.com/MotohisaFukuda/RTNI).<br>
 This was developped through:<br>
