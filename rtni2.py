@@ -29,8 +29,10 @@ class Integration(Exception):
 
 
 class _Node:
-    def __init__(self, info):
+    def __init__(self, info, tensor):
         self._info = info
+        self._tensor = tensor
+        
         self._connected_to = None
         
         self._in_integration_mode = False
@@ -97,6 +99,12 @@ class _Node:
     
     def get_info(self,):
         return f'{self._info}'
+
+    def get_connected_to(self,):
+        return self._connected_to
+
+    def get_tensor(self,):
+        return self._tensor
     
 class Tensor:
     def __init__(self, name, dims, tensor_id=0, nickname = None):
@@ -116,7 +124,7 @@ class Tensor:
         self._nodes = [
             _Node(info={'tensor_name': self._name, 'tensor_id': self._tensor_id, 'tensor_nickname': self._nickname,
                        'space_id': i, 'dim': self._dims[i],
-                      'is_dangling_end': False}) 
+                      'is_dangling_end': False}, tensor=self) 
             for i, dim in enumerate(self._dims)]
         
         self._family = [self] if tensor_id == 0 else None
@@ -126,6 +134,9 @@ class Tensor:
 
     def __getitem__(self, i):
         return self._nodes[i]
+
+    def __len__(self):
+        return len(self._nodes)
     
     def __call__(self, i):
         return self._nodes[i]
@@ -175,6 +186,9 @@ class Tensor:
     def get_info(self, ):
         return {'tensor_name': self._name, 'tensor_id': self._tensor_id, 'tensor_nickname': self._nickname,
                 'dims': self._dims, 'transpose': self._transpose, 'conjugate': self._conjugate}
+
+    def get_nodes(self,):
+        return self._nodes
 
 def tensor(name, dims, tensor_id=0, nickname=None):
     return Tensor(name, dims, tensor_id, nickname)
@@ -234,6 +248,9 @@ class _DanglingTensor:
 
     def __getitem__(self, i):
         return self._nodes[i]
+
+    def __len__(self):
+        return len(self._nodes)
     
     def about_nodes(self,):
         for i, node in enumerate(self._nodes):
@@ -241,7 +258,10 @@ class _DanglingTensor:
         print()
         
     def get_info(self, ):
-        return {'tensor_name': self._name}   
+        return {'tensor_name': self._name}  
+
+    def get_nodes(self, ):
+        return self._nodes   
     
     # nodes in tensors are made with info={'tensor_name': , 'tensor_id': , 'space_id': , 'dim': }
     def add(self, node): # 'tensor_id': 0, 'space_id': 1, 'dim': n
@@ -250,7 +270,7 @@ class _DanglingTensor:
         d['tensor_name_origonal'] = d['tensor_name']
         d['tensor_name'] = 'dg_' + d['tensor_name']
         d['tensor_nickname'] = 'dg_' + d['tensor_nickname']
-        dangling_node = _Node(info=d)
+        dangling_node = _Node(info=d, tensor=self)
         dangling_node._in_integration_mode = True
         dangling_node * node
         self._nodes.append(dangling_node)
@@ -275,9 +295,17 @@ class _TensorNetwork:
         
         # to access the system in which this tensor-network is.  
         self._system = None
+
+        self._info_removed = {}
         
     def __repr__(self,):
         return f'tensors:\n{self._tensors}'
+
+    def __getitem__(self, i):
+        return self._tensors[i]
+    
+    def __len__(self):
+        return len(self._tensors)
     
     ##### building a tensor-network.
     # add tensors into the current tensor-network, at the beginning. 
@@ -332,13 +360,13 @@ class _TensorNetwork:
             
     ##### getting info about the current tensor-network.
     # get all tensors under conditions. 
+
+    def _get_tensors(self):
+        return self._tensors
     
     def _get_random_tensors(self, random_tensor_name):
         return [t for t in self._tensors if (t.__class__.__name__ != '_DanglingTensor') and (t._name == random_tensor_name)]
-    
-#     def _get_nonrandom_tensors(self, random_tensor_name):
-#         return [t for t in self._tensors if (t.__class__.__name__ != '_DanglingTensor') and (t._name != random_tensor_name)]
-    
+
     def _get_dangling_tensors(self,):
         return [t for t in self._tensors if (t.__class__.__name__ == '_DanglingTensor')]  
    
@@ -426,7 +454,10 @@ class TensorNetworks:
         self.allowed_types = ['unitary', 'orthogonal', 'real_gaussian', 'complex_gaussian']
      
     def __getitem__(self, i):
-        return self._tensornetworks[i]
+        tensornetwork = self._tensornetworks[i]
+        tensornetwork._info_removed = self._info_removed
+        tensornetwork._tensors = [t for t in tensornetwork._tensors if t._name not in self._info_removed]
+        return tensornetwork
     
     def __len__(self):
         return len(self._tensornetworks)
